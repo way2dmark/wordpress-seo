@@ -75,7 +75,6 @@ export default function initPostScraper( $, store, editorData ) {
 		return;
 	}
 	let metaboxContainer;
-	let titleElement;
 	let app;
 	let postDataCollector;
 	const customAnalysisData = new CustomAnalysisData();
@@ -90,7 +89,7 @@ export default function initPostScraper( $, store, editorData ) {
 	 */
 	function getUrlPathFromResponse( response ) {
 		if ( response.responseText === "" ) {
-			return titleElement.val();
+			return $( "#title" ).val();
 		}
 		// Added divs to the response text, otherwise jQuery won't parse to HTML, but an array.
 		return jQuery( "<div>" + response.responseText + "</div>" )
@@ -277,8 +276,6 @@ export default function initPostScraper( $, store, editorData ) {
 				store.dispatch( refreshSnippetEditor() );
 			};
 		}
-
-		titleElement = $( "#title" );
 
 		const translations = getTranslations();
 		if ( ! isUndefined( translations ) && ! isUndefined( translations.domain ) ) {
