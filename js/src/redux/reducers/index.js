@@ -3,6 +3,7 @@ import activeMarker from "./activeMarker";
 import advancedSettings from "./advancedSettings";
 import analysisData from "./analysisData";
 import editorContext from "./editorContext";
+import editorData from "./editorData";
 import isCornerstone from "./cornerstoneContent";
 import facebookEditor from "./facebookEditor";
 import focusKeyword from "./focusKeyword";
@@ -22,6 +23,7 @@ export default {
 	activeMarker,
 	analysisData,
 	editorContext,
+	editorData,
 	isCornerstone,
 	facebookEditor,
 	focusKeyword,
