@@ -106,7 +106,7 @@ export default function initElementEditorIntegration( store ) {
 		);
 	} );
 
-	const yoastInputs = document.querySelectorAll( "input[name^='yoast'" );
+	const yoastInputs = document.querySelectorAll( "input[name^='yoast']" );
 	yoastInputs.forEach( input => storeValueAsOldValue( input ) );
 
 	setInterval( () => yoastInputs.forEach( detectChange ), 500 );
