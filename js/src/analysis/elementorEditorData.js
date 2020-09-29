@@ -44,12 +44,14 @@ export default class ElementorEditorData {
 	 * @returns {void}
 	 */
 	initialize( replaceVars ) {
-		// Fill data object on page load.
-		this._data = this.getInitialData( replaceVars );
-		fillReplacementVariables( this._data, this._store );
-		this.initializeForm();
-		this.subscribeToElementor();
-		// this.subscribeToYoastSEO();
+		jQuery( () => {
+			// Fill data object on page load.
+			this._data = this.getInitialData( replaceVars );
+			fillReplacementVariables( this._data, this._store );
+			this.initializeForm();
+			this.subscribeToElementor();
+			// this.subscribeToYoastSEO();
+		} );
 	}
 
 	initializeForm() {
