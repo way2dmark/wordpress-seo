@@ -50,10 +50,6 @@ function isShallowEqual( currentData, newData ) {
  * @returns {Object} The editorData object.
  */
 function getEditorData() {
-	if ( ! window.elementor ) {
-		return editorData;
-	}
-
 	return {
 		content: getContent(),
 		title: window.elementor.settings.page.model.get( "post_title" ),
@@ -84,5 +80,17 @@ function handleEditorChange() {
  * @returns {void}
  */
 export default function initialize() {
-	window.elementor.channels.editor.on( "status:change", handleEditorChange );
+	// This function relies on `window.elementor`. This should be available after the content is loaded.
+	document.addEventListener( "DOMContentLoaded", () => {
+		// Initialize Elementor data one time after the preview is available.
+		window.elementor.once( "preview:loaded", () => {
+			window.elementorFrontend.hooks.addAction( "frontend/element_ready/global", () => {
+				handleEditorChange();
+				window.elementorFrontend.hooks.removeAction( "frontend/element_ready/global" );
+			} );
+		} );
+
+		// Subscribe to Elementor change.
+		window.elementor.channels.editor.on( "status:change", handleEditorChange );
+	} );
 }

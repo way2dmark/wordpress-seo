@@ -72,23 +72,10 @@ export default function initElementEditorIntegration( store ) {
 
 	jQuery( function() {
 		elementor.once( "preview:loaded", () => {
-			let refreshed = false;
-
 			// Connects the tab to the panel.
 			$e.components
 				.get( "panel/elements" )
 				.addTab( "yoast", { title: "Yoast SEO" } );
-
-			// Updates the initial data after the content is available.
-			elementorFrontend.hooks.addAction( "frontend/element_ready/global", () => {
-				if ( refreshed ) {
-					return;
-				}
-
-				refreshed = true;
-				window.editorData._data = window.editorData.collectData();
-				window.YoastSEO.app.refresh();
-			} );
 		} );
 	} );
 

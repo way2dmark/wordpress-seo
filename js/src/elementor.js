@@ -4,6 +4,7 @@ import initElementorEditorIntegration from "./initializers/elementor-editor-inte
 import initEditorStore from "./initializers/editor-store";
 import initScraper from "./initializers/elementor-scraper";
 import initAdminMedia from "./initializers/admin-media";
+import initElementorData from "./watchers/elementor";
 
 window.yoast = window.yoast || {};
 window.yoast.initEditorIntegration = initElementorEditorIntegration;
@@ -11,6 +12,9 @@ window.yoast.EditorData = ElementorEditorData;
 
 // Initialize the editor store.
 const store = initEditorStore();
+
+// Initialize the editor data watcher.
+initElementorData();
 
 // Initialize the editor integration.
 window.yoast.initEditorIntegration( store );
