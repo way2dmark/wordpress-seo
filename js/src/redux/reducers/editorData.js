@@ -2,21 +2,15 @@ import {
 	UPDATE_EDITOR_DATA,
 	SET_CONTENT,
 	SET_TITLE,
-	SET_DESCRIPTION,
+	SET_EXCERPT,
 	SET_SLUG,
-	SET_BASE_URL,
-	SET_KEYPHRASE,
-	SET_SYNONYMS,
 } from "../actions/editorData";
 
 const INITIAL_STATE = {
 	content: "",
 	title: "",
-	description: "",
+	excerpt: "",
 	slug: "",
-	baseUrl: "",
-	keyphrase: "",
-	synonyms: "",
 };
 
 /* eslint-disable complexity */
@@ -45,30 +39,15 @@ function editorDataReducer( state = INITIAL_STATE, action ) {
 				...state,
 				title: action.title,
 			};
-		case SET_DESCRIPTION:
+		case SET_EXCERPT:
 			return {
 				...state,
-				description: action.description,
+				excerpt: action.excerpt,
 			};
 		case SET_SLUG:
 			return {
 				...state,
 				slug: action.slug,
-			};
-		case SET_BASE_URL:
-			return {
-				...state,
-				baseUrl: action.baseUrl,
-			};
-		case SET_KEYPHRASE:
-			return {
-				...state,
-				keyphrase: action.keyphrase,
-			};
-		case SET_SYNONYMS:
-			return {
-				...state,
-				synonyms: action.synonyms,
 			};
 	}
 	return state;

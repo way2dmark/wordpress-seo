@@ -1,4 +1,10 @@
-import { excerptFromContent } from "../helpers/replacementVariableHelpers";
+import { dispatch } from "@wordpress/data";
+
+let editorData = {
+	content: "",
+	title: "",
+	excerpt: "",
+};
 
 /**
  * Gets the post content.
@@ -16,42 +22,67 @@ function getContent() {
 }
 
 /**
- * Gets the excerpt from the post.
+ * Checks whether the current data and the incoming data are the same.
  *
- * @param {boolean} useFallBack Whether the fallback for content should be used.
- * @param {string} content The post content.
+ * @param {Object} currentData The current data.
+ * @param {Object} newData     The incoming data.
  *
- * @returns {string} The excerpt.
+ * @returns {boolean} Whether the current data and the incoming data is the same or not.
  */
-function getExcerpt( useFallBack = true, content = "" ) {
-	const excerpt = window.elementor.settings.page.model.get( "post_excerpt" );
-	if ( excerpt !== "" || useFallBack === false ) {
-		return excerpt;
+function isShallowEqual( currentData, newData ) {
+	if ( Object.keys( currentData ).length !== Object.keys( newData ).length ) {
+		return false;
 	}
 
-	return excerptFromContent( content );
+	for ( const dataPoint in currentData ) {
+		if ( currentData.hasOwnProperty( dataPoint ) ) {
+			if ( ! ( dataPoint in newData ) || currentData[ dataPoint ] !== newData[ dataPoint ] ) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
+/**
+ * Gets the data that is specific to this editor.
+ *
+ * @returns {Object} The editorData object.
+ */
 function getEditorData() {
 	if ( ! window.elementor ) {
-		return {
-			content: "",
-			title: "",
-			description: "",
-			slug: "",
-			baseUrl: "",
-			keyphrase: "",
-			synonyms: "",
-		};
+		return editorData;
 	}
 
 	return {
 		content: getContent(),
 		title: window.elementor.settings.page.model.get( "post_title" ),
-		description: getExcerpt(),
-		slug: "",
-		baseUrl: "",
-		keyphrase: "",
-		synonyms: "",
+		excerpt: window.elementor.settings.page.model.get( "post_excerpt" ),
 	};
+}
+
+/**
+ * Dispatches new data when the editor is dirty.
+ *
+ * @returns {void}
+ */
+function handleEditorChange() {
+	const data = getEditorData();
+
+	// Set isDirty to true if the current data and Gutenberg data are unequal.
+	const isDirty = ! isShallowEqual( editorData, data );
+
+	if ( isDirty ) {
+		editorData = data;
+		dispatch( "yoast-seo/editor" ).updateEditorData( editorData );
+	}
+}
+
+/**
+ * Initializes the watcher by coupling the change handler to the change event.
+ *
+ * @returns {void}
+ */
+export default function initialize() {
+	window.elementor.channels.editor.on( "status:change", handleEditorChange );
 }
